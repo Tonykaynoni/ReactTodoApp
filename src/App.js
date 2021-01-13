@@ -1,23 +1,34 @@
-import logo from './logo.svg';
-import './App.css';
+import logo from "./logo.svg";
+import "./App.css";
+import Todo from "./TodoList";
+import SearchTodo from "./SearchTodo";
+import AddTodo from "./AddTodo";
+import { useState } from "react";
+import Modal from "./Modal";
 
 function App() {
+  let [list, updateList] = useState([]);
+  let [isModal, updateModal] = useState(false);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <SearchTodo />
+      <div className="app">
+        <Todo list={list}/>
+        <div className="addTodo">
+          <button onClick={() => updateModal(!isModal)}>+</button>
+        </div>
+        {isModal && (
+          <Modal
+            
+            onAdd={(updatedItem) => {
+              updateList(list => [...list, updatedItem]
+                ); //To be sure the value of the list is the current one.
+                updateModal(!isModal)
+            }}
+          />
+        )}
+      </div>
     </div>
   );
 }
